@@ -14,12 +14,13 @@ def coordtochar(coords):
     return chr
 
 def checkfile(myfile):
+    print("received %s to be checked."%myfile)
     try:
-        if not os.path.getsize(inpfile):
-            print("file %s is empty"%inpfile)
+        if not os.path.getsize(myfile):
+            print("file %s is empty"%myfile)
             sys.exit(-1)
     except OSError:
-        print("file %s not found"%inpfile)
+        print("file %s not found"%myfile)
         sys.exit(-1)
     return 0
 
@@ -68,7 +69,8 @@ constraints=args.constraints
 if not inpfile is None:
     checkfile(inpfile)
 if not constraints is None:
-    checkfile(inpfile)
+    print('checking constraints file')
+    checkfile(constraints)
 
 with open(inpfile) as inp:
     lines=inp.readlines()

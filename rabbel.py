@@ -66,12 +66,7 @@ aparser.add_argument('--constraints','-c',type=str,default=None)
 args=aparser.parse_args()
 inpfile=args.input
 constraints=args.constraints
-if not inpfile is None:
-    checkfile(inpfile)
-if not constraints is None:
-    print('checking constraints file')
-    checkfile(constraints)
-
+checkfile(inpfile)
 with open(inpfile) as inp:
     lines=inp.readlines()
 maxrows=0
@@ -85,6 +80,27 @@ for line in lines:
     mystrlist.append(mychars)
 print("Finished reading input file")
 print(maxrows,maxcols)
+
+if not constraints is None:
+    print('checking constraints file')
+    checkfile(constraints)
+    with open(constraints) as inp:
+        lines=inp.readlines()
+    rows=0
+    cols=0
+    for line in lines:
+        rows+=1
+        l=line.split('\n')[0]
+        mychars=l.split(',')
+        if len(mychars) != maxcols:
+            print("Column count mismatch in provided constraints file %s"%constraints)
+            sys.exit(-1)
+        print(mychars)
+    if rows != maxrows:
+        print(rows)
+        print("Row count mismatch in provided constraints file %s"%constraints)
+        sys.exit(-1)
+
 #print(mystrlist)
 #print(mystrlist[3][2])
 vowels=['A','E','I','O','U','Ä','Ö','Å']

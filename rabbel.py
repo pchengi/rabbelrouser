@@ -7,11 +7,16 @@ import sys
 mystrlist=[]
 maxchainlen=7
 
-def coordtochar(coords):
-    row=coords[0]
-    col=coords[1]
-    chr=mystrlist[row][col]
-    return chr
+def coordstochars(coordlist):
+    charlist=[]
+    coordct=0
+    for coords in coordlist:
+        coordct+=1
+        row=coords[0]
+        col=coords[1]
+        chr=mystrlist[row][col]
+        charlist.append(chr)
+    return charlist
 
 def checkfile(myfile):
     print("received %s to be checked."%myfile)
@@ -24,14 +29,14 @@ def checkfile(myfile):
         sys.exit(-1)
     return 0
 
-def blah(traversed,elements,coords):
+def blah(elements,coords,traversed):
     lent=len(traversed)
+    
     if lent>2:
         vowelcount=0
         rej=''
-        last=coordtochar(traversed[lent-1])
-        last2=coordtochar(traversed[lent-2])
-        last3=coordtochar(traversed[lent-3])
+        charlist=coordstochars(traversed)
+        last,last2,last3=charlist[-3:]
         if last in vowels:
             vowelcount+=1
         if last2 in vowels:
@@ -56,7 +61,7 @@ def blah(traversed,elements,coords):
         if neighbor not in newtraversed:
             if len(newtraversed) <maxchainlen:
                 newtraversed.append(neighbor)
-                for result in blah(newtraversed,elements,neighbor):
+                for result in blah(elements,neighbor,newtraversed):
                     yield result
             else:
                 return
@@ -65,6 +70,7 @@ aparser.add_argument('--input','-i',type=str,default=None,required=True)
 aparser.add_argument('--constraints','-c',type=str,default=None)
 args=aparser.parse_args()
 inpfile=args.input
+avoidstarts=[]
 constraints=args.constraints
 checkfile(inpfile)
 with open(inpfile) as inp:
@@ -80,6 +86,12 @@ for line in lines:
     mystrlist.append(mychars)
 print("Finished reading input file")
 print(maxrows,maxcols)
+with open('avoidstarts','r') as inp:
+    lines=inp.readlines()
+for line in lines:
+    word=line.split('\n')[0]
+    if not word in avoidstarts:
+        avoidstarts.append(word)
 
 if not constraints is None:
     print('checking constraints file')
@@ -101,8 +113,6 @@ if not constraints is None:
         print("Row count mismatch in provided constraints file %s"%constraints)
         sys.exit(-1)
 
-#print(mystrlist)
-#print(mystrlist[3][2])
 vowels=['A','E','I','O','U','Ä','Ö','Å']
 elements={}
 for row in range(0,maxrows):
@@ -130,10 +140,11 @@ for row in range(0,maxrows):
     for col in range(0,maxcols):
         traversed=[]
         traversed.append((row,col))
-        for results in blah(traversed,elements,(row,col)):
+        for results in blah(elements,(row,col),traversed):
+            charlist=coordstochars(results)
             assembled=''
-            for result in results:
-                assembled+=coordtochar(result)
+            for ch in charlist:
+                assembled+=ch
             if not assembled in allresults:
                 allresults.append(assembled)
 

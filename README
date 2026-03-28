@@ -1,0 +1,29 @@
+## Input file
+
+The input for the rabbelrouser program, is a text file, with multiple rows of comma-separated characters.
+Here's a sample input file, below.
+
+```
+E,A,E,E
+Å,R,E,N
+A,S,E,I
+T,U,N,S
+```
+
+## Constraints file
+
+Constraints can be specified in a text file, with multiple rows of comma-separated characters.
+N indicates No constraints, or normal.
+S indicates don't start with this, but it can be used in words starting from other characters.
+D indicates don't use.
+Here's a sample constraints file, below.
+
+```
+S,N,N,N
+N,N,D,N
+N,N,N,N
+N,D,S,S
+```
+- Note that the constraints file should have the same number of rows and columns as the input file.
+- The constraints file is optional. 
+

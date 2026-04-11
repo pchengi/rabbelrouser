@@ -118,7 +118,8 @@ for line in lines:
         avoidstarts.append(word)
 
 if not constraints is None:
-    print('checking constraints file')
+    if debug:
+        print('checking constraints file')
     checkfile(constraints)
     with open(constraints) as inp:
         lines=inp.readlines()
@@ -132,7 +133,8 @@ if not constraints is None:
         if len(mychars) != maxcols:
             print("Column count mismatch in provided constraints file %s"%constraints)
             sys.exit(-1)
-        print(mychars)
+        if debug:
+            print(mychars)
         for testval in mychars:
             if not testval in validchars:
                 print("Invalid character %s found in provided constraints file %s"%(testval,constraints))

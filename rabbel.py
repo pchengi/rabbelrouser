@@ -5,7 +5,7 @@ import os
 import sys
 
 mystrlist=[]
-maxchainlen=7
+constraintlist=[]
 
 def coordstochars(coordlist):
     charlist=[]
@@ -19,7 +19,8 @@ def coordstochars(coordlist):
     return charlist
 
 def checkfile(myfile):
-    print("received %s to be checked."%myfile)
+    if debug:
+        print("received %s to be checked."%myfile)
     try:
         if not os.path.getsize(myfile):
             print("file %s is empty"%myfile)
@@ -28,27 +29,45 @@ def checkfile(myfile):
         print("file %s not found"%myfile)
         sys.exit(-1)
     return 0
-
 def blah(elements,coords,traversed):
+    firsttrav=traversed[:1][0]
+    lasttrav=traversed[-1:][0]
+    row=firsttrav[0]
+    col=firsttrav[1]
+    try:
+        if constraintlist[row][col] == 'S':
+            return
+    except:
+        pass
+    row=lasttrav[0]
+    col=lasttrav[1]
+    try:
+        if constraintlist[row][col] == 'D':
+            return
+    except:
+        pass
     lent=len(traversed)
-    
+    lent=len(traversed)
+    charlist=coordstochars(traversed)
+    if lent>1:
+        comb=''
+        for ch in charlist:
+            comb+=ch
+        if comb in avoidstarts:
+            rejects.append(comb)
+            return
     if lent>2:
         vowelcount=0
-        rej=''
-        charlist=coordstochars(traversed)
         last,last2,last3=charlist[-3:]
-        if last in vowels:
-            vowelcount+=1
-        if last2 in vowels:
-            vowelcount+=1
-        if last3 in vowels:
-            vowelcount+=1
+        rej=''
+        for val in last,last2,last3:
+            rej+=val
+            if val in vowels:
+                vowelcount+=1
         if vowelcount>2:
-            rej+=last
-            rej+=last2
-            rej+=last3
             rejects.append(rej)
             return
+        rej=''
         if last == last2 == last3:
             rej+=last
             rej+=last2
@@ -67,11 +86,15 @@ def blah(elements,coords,traversed):
                 return
 aparser=argparse.ArgumentParser()
 aparser.add_argument('--input','-i',type=str,default=None,required=True)
-aparser.add_argument('--constraints','-c',type=str,default=None)
+aparser.add_argument('--constraints','-c',type = str, default = None)
+aparser.add_argument('--max-length','-m', type = int, default = 0, required = True)
+aparser.add_argument('-d', '--debug', default=False,action='store_true')
 args=aparser.parse_args()
 inpfile=args.input
+debug=args.debug
 avoidstarts=[]
 constraints=args.constraints
+maxchainlen = args.max_length
 checkfile(inpfile)
 with open(inpfile) as inp:
     lines=inp.readlines()
@@ -84,8 +107,9 @@ for line in lines:
     if maxcols == 0:
         maxcols=len(mychars)
     mystrlist.append(mychars)
-print("Finished reading input file")
-print(maxrows,maxcols)
+if debug:
+    print("Finished reading input file")
+    print(maxrows,maxcols)
 with open('avoidstarts','r') as inp:
     lines=inp.readlines()
 for line in lines:
@@ -100,6 +124,7 @@ if not constraints is None:
         lines=inp.readlines()
     rows=0
     cols=0
+    validchars=['N','D','S']
     for line in lines:
         rows+=1
         l=line.split('\n')[0]
@@ -108,6 +133,11 @@ if not constraints is None:
             print("Column count mismatch in provided constraints file %s"%constraints)
             sys.exit(-1)
         print(mychars)
+        for testval in mychars:
+            if not testval in validchars:
+                print("Invalid character %s found in provided constraints file %s"%(testval,constraints))
+                sys.exit(-1)
+        constraintlist.append(mychars)
     if rows != maxrows:
         print(rows)
         print("Row count mismatch in provided constraints file %s"%constraints)
@@ -134,7 +164,7 @@ for row in range(0,maxrows):
             elements[(row,col)].append((row,col+1))
         if col-1>=0 :
             elements[(row,col)].append((row,col-1))
-allresults=[]
+seen=set()
 rejects=[]    
 for row in range(0,maxrows):
     for col in range(0,maxcols):
@@ -145,9 +175,13 @@ for row in range(0,maxrows):
             assembled=''
             for ch in charlist:
                 assembled+=ch
-            if not assembled in allresults:
-                allresults.append(assembled)
+            if assembled not in seen:
+                print(assembled)
+                seen.add(assembled)
+            #if not assembled in allresults:
+            #    allresults.append(assembled)
 
-for result in allresults:
-    print(result)
-print("num rejects=%d"%(len(rejects)))
+#for result in allresults:
+#    print(result)
+if debug:
+    print("num rejects=%d"%(len(rejects)))

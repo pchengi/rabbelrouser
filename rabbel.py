@@ -6,7 +6,20 @@ import sys
 
 mystrlist=[]
 constraintlist=[]
+solvedlist=[]
+supresslist=[]
 
+def readwords(inpfile,outlist):
+    try:
+        with open(inpfile) as inp:
+            lines=inp.readlines()
+    except(FileNotFoundError):
+        return -1
+    for line in lines:
+        l=line.split('\n')[0].lower().upper()
+        if not l in outlist:
+            outlist.append(l)
+    return 0
 def coordstochars(coordlist):
     charlist=[]
     coordct=0
@@ -87,11 +100,19 @@ def blah(elements,coords,traversed):
 aparser=argparse.ArgumentParser()
 aparser.add_argument('--input','-i',type=str,default=None,required=True)
 aparser.add_argument('--constraints','-c',type = str, default = None)
+aparser.add_argument('-s', '--solutions', default = False)
 aparser.add_argument('--max-length','-M', type = int, default = 0, required = True)
 aparser.add_argument('--min-length','-m', type = int, default = 3)
 aparser.add_argument('-d', '--debug', default=False,action='store_true')
 args=aparser.parse_args()
 inpfile=args.input
+solutions=args.solutions
+if solutions is not False:
+    retval=readwords(solutions,solvedlist)
+    if retval == -1:
+        print("Solutions file %s is not a valid file!"%solutions)
+        sys.exit(-1)
+        
 debug=args.debug
 avoidstarts=[]
 constraints=args.constraints
@@ -112,12 +133,7 @@ for line in lines:
 if debug:
     print("Finished reading input file")
     print(maxrows,maxcols)
-with open('avoidstarts','r') as inp:
-    lines=inp.readlines()
-for line in lines:
-    word=line.split('\n')[0]
-    if not word in avoidstarts:
-        avoidstarts.append(word)
+readwords('avoidstarts',avoidstarts)
 
 if not constraints is None:
     if debug:
@@ -179,6 +195,8 @@ for row in range(0,maxrows):
             assembled=''
             for ch in charlist:
                 assembled+=ch
+            if assembled in solvedlist:
+                continue
             if assembled not in seen:
                 print(assembled)
                 seen.add(assembled)

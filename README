@@ -1,3 +1,22 @@
+## What is Rabbel
+
+Rabbel (rabbel.se) is a Swedish word game, where the objective is to work out the various possible words from a given NxN square of alphabets. Words can be formed by linking together alphabets in any order, as long as they are:
+
+- adjacent to the preceeding character.
+- the formed word doesn't have any closed loops, i.e. traversing of an alphabet more than once.
+
+Rabbel uses the dictionaries from the Swedish Academy, available on svenska.se
+
+## Purpose of rabbelrouser
+
+As a immigrant to Sweden who has learned Swedish later in life, I'm constantly looking at ways to improve my Swedish vocabulary, and Rabbel appealed to me, but after I'd solved the words that I knew about, the game would then devolve into randomly sweeping together words, and hoping to get lucky, in order to learn a new word, or unlock a word-reveal. rabbelrouser is an attempt to get a helping hand, and to make it easier to learn new words.
+
+
+## rabbelrouser: how it works
+
+-rabbelrouser is a program that that accepts an NxN matrix of characters as input, and an optional list of contraints, and proceeds to generate an exhaustive list of possible words, that can then be fed to a dictionary lookup program, to list out the valid words.
+- rabbelrouser is only the generator or permutator tool; the dictionary lookups is made using a tool called sv-eng.
+
 ## Input file
 
 The input for the rabbelrouser program, is a text file, with multiple rows of comma-separated characters.
@@ -14,8 +33,8 @@ T,U,N,S
 
 Constraints can be specified in a text file, with multiple rows of comma-separated characters.
 N indicates No constraints, or normal.
-S indicates don't start with this, but it can be used in words starting from other characters.
-D indicates don't use.
+S indicates that words cannot start with the alphabet in this particular position, but it can be still be used in words starting from other positions.
+D indicates that the alphabet in its position is not to be used, that is, Do not use.
 Here's a sample constraints file, below.
 
 ```
@@ -27,3 +46,6 @@ N,D,S,S
 - Note that the constraints file should have the same number of rows and columns as the input file.
 - The constraints file is optional. 
 
+## Solutions file
+
+The solutions file is an optional argument; if used, it should be a file containg words that have already been solved by you. Those words would then not be presented as options.

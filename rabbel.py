@@ -47,7 +47,6 @@ def blah(elements,coords,traversed):
     except:
         pass
     lent=len(traversed)
-    lent=len(traversed)
     charlist=coordstochars(traversed)
     if lent>1:
         comb=''
@@ -74,7 +73,8 @@ def blah(elements,coords,traversed):
             rej+=last3
             rejects.append(rej)
             return
-        yield traversed
+        if lent >=minchainlen:
+            yield traversed
     for neighbor in elements[coords]:
         newtraversed=copy.deepcopy(traversed)
         if neighbor not in newtraversed:
@@ -87,7 +87,8 @@ def blah(elements,coords,traversed):
 aparser=argparse.ArgumentParser()
 aparser.add_argument('--input','-i',type=str,default=None,required=True)
 aparser.add_argument('--constraints','-c',type = str, default = None)
-aparser.add_argument('--max-length','-m', type = int, default = 0, required = True)
+aparser.add_argument('--max-length','-M', type = int, default = 0, required = True)
+aparser.add_argument('--min-length','-m', type = int, default = 3)
 aparser.add_argument('-d', '--debug', default=False,action='store_true')
 args=aparser.parse_args()
 inpfile=args.input
@@ -95,6 +96,7 @@ debug=args.debug
 avoidstarts=[]
 constraints=args.constraints
 maxchainlen = args.max_length
+minchainlen = args.min_length
 checkfile(inpfile)
 with open(inpfile) as inp:
     lines=inp.readlines()

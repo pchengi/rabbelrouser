@@ -49,3 +49,24 @@ N,D,S,S
 ## Solutions file
 
 The solutions file is an optional argument; if used, it should be a file containg words that have already been solved by you. Those words would then not be presented as options.
+
+## Suppressmatches file
+
+A file called supressmatches is also checked and the contents excluded from the permutated word list.
+
+## Usage
+
+- Create the input file, and optionally, the constraints file, for the puzzle you are trying to solve.
+- Generate the permuted list
+```
+python rabbel.py -i inps/20260415 -M6 >apr15.out
+[pchengi@viperwolf rabbelrouser]$ wc -l apr15.out
+16390 apr15.out
+```
+- In the above command, we are restricting the generated words to a maximal length of 6 characters.
+- Now, execute rabbelrouser.sh with the freshly generated word list as the argument.
+
+```
+bash rabbelrouser.sh apr15.out|wc -l
+76
+```

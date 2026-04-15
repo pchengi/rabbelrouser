@@ -1,0 +1,3 @@
+[submodule "sv-eng"]
+	path = sv-eng
+	url = https://github.com/pchengi/sv-eng.git

@@ -80,3 +80,11 @@ python rabbel.py -i inps/20260415 -M6 >apr15.out
 bash rabbelrouser.sh apr15.out|wc -l
 76
 ```
+- If you'd like to only generate 6 letter words, you could do that in this manner:
+
+```bash
+python rabbel.py -i inps/20260415 -m6 -M6 >sixletterwordsonly
+bash rabbelrouser.sh sixlettersonly
+surhet
+husera
+```

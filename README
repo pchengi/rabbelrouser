@@ -17,6 +17,16 @@ As a immigrant to Sweden who has learned Swedish later in life, I'm constantly l
 -rabbelrouser is a program that that accepts an NxN matrix of characters as input, and an optional list of contraints, and proceeds to generate an exhaustive list of possible words, that can then be fed to a dictionary lookup program, to list out the valid words.
 - rabbelrouser is only the generator or permutator tool; the dictionary lookups is made using a tool called sv-eng.
 
+## Setting up
+
+rabbelrouser's git repository uses the sv-eng program as a git submodule. Either clone rabbelrouser recursively, to directly fetch the submodule, or execute the setupsub.sh script, which apart from fetching the submodule, sets up the sv-eng program for use.
+
+```bash
+git clone https://github.com/pchengi/rabbelrouser.git
+cd rabbelrouser
+bash setupsub.sh
+```
+
 ## Input file
 
 The input for the rabbelrouser program, is a text file, with multiple rows of comma-separated characters.

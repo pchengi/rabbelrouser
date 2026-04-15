@@ -7,7 +7,7 @@ import sys
 mystrlist=[]
 constraintlist=[]
 solvedlist=[]
-supresslist=[]
+suppresslist=[]
 
 def readwords(inpfile,outlist):
     try:
@@ -112,7 +112,7 @@ if solutions is not False:
     if retval == -1:
         print("Solutions file %s is not a valid file!"%solutions)
         sys.exit(-1)
-        
+readwords('suppressmatches',suppresslist)
 debug=args.debug
 avoidstarts=[]
 constraints=args.constraints
@@ -196,6 +196,8 @@ for row in range(0,maxrows):
             for ch in charlist:
                 assembled+=ch
             if assembled in solvedlist:
+                continue
+            if assembled in suppresslist:
                 continue
             if assembled not in seen:
                 print(assembled)

@@ -5,4 +5,4 @@ cd sv-eng|| exit -1
 python dictops.py -u
 python dictops.py -x
 bash gensaolwords.sh
-python dictops.py -a -i saol14.words --source saol14|tee sauladds.out
+python dictops.py -a -m -i saol14.words --source saol14|tee sauladds.out

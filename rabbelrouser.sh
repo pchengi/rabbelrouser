@@ -11,4 +11,4 @@ if [ ! -s $wordlist ]; then
     exit -1;
 fi
 
-python sv-eng/dictops.py -e -b -i $wordlist -s
+python sv-eng/dictops.py -e -m -i $wordlist -s

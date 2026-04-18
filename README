@@ -89,3 +89,20 @@ bash rabbelrouser.sh sixlettersonly
 surhet
 husera
 ```
+
+## Starting from a alphabet in a specific position.
+
+Sometimes (most times?!), one might want help only with words that can be formed while starting from a specific position. In this case, the row and column coords may be provided, and only words starting from that position will be permuted.
+
+```
+cat inps/20260418
+E,O,A,B
+Å,A,L,N
+D,O,E,N
+D,R,G,O
+[pchengi@viperwolf rabbelrouser]$ python rabbel.py  -i inps/20260418 -M6 -s solutions/20260418 --start-with 0 0 >apr18
+[pchengi@viperwolf rabbelrouser]$ bash rabbelrouser.sh apr18
+eoler
+
+```
+

@@ -101,11 +101,13 @@ aparser=argparse.ArgumentParser()
 aparser.add_argument('--input','-i',type=str,default=None,required=True)
 aparser.add_argument('--constraints','-c',type = str, default = None)
 aparser.add_argument('-s', '--solutions', default = False)
+aparser.add_argument('--start-with', type=int, nargs=2, default = False, help = 'The x,y coordinates of the alphabet you would like to start the generation from.')
 aparser.add_argument('--max-length','-M', type = int, default = 0, required = True)
 aparser.add_argument('--min-length','-m', type = int, default = 3)
 aparser.add_argument('-d', '--debug', default=False,action='store_true')
 args=aparser.parse_args()
 inpfile=args.input
+startwith=args.start_with
 solutions=args.solutions
 if solutions is not False:
     retval=readwords(solutions,solvedlist)
@@ -134,6 +136,21 @@ if debug:
     print("Finished reading input file")
     print(maxrows,maxcols)
 readwords('avoidstarts',avoidstarts)
+if startwith is not False:
+    if startwith is None:
+        print("--start-with requires that you provide the row and column numbers of the alphabet you'd like to start the generation from.")
+        sys.exit(-1)
+    if constraints is not None:
+        print("--start-with and --constraints are mutually exclusive options!")
+        sys.exit(-1)
+    for row in range(0,maxrows):
+        mychars=[]
+        for col in range(0,maxcols):
+            mychars.append('S')
+        constraintlist.append(mychars)
+    row=startwith[0]
+    col=startwith[1]
+    constraintlist[row][col]='N'
 
 if not constraints is None:
     if debug:

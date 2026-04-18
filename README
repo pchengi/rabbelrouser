@@ -39,6 +39,7 @@ E,A,E,E
 A,S,E,I
 T,U,N,S
 ```
+- If a position on the board contains a non-character, like a smily or emoji, use a '!' (exclamation) symbol instead.
 
 ## Constraints file
 
@@ -84,8 +85,7 @@ bash rabbelrouser.sh apr15.out|wc -l
 - If you'd like to only generate 6 letter words, you could do that in this manner:
 
 ```bash
-python rabbel.py -i inps/20260415 -m6 -M6 >sixletterwordsonly
-bash rabbelrouser.sh sixlettersonly
+python rabbel.py -i inps/20260415 -m6 -M6|bash rabbelrouser.sh
 surhet
 husera
 ```

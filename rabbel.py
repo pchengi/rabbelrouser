@@ -8,6 +8,7 @@ mystrlist=[]
 constraintlist=[]
 solvedlist=[]
 suppresslist=[]
+allowedchars=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','X','Y','Z','Ä','Å','Ö','!']
 
 def readwords(inpfile,outlist):
     try:
@@ -22,9 +23,7 @@ def readwords(inpfile,outlist):
     return 0
 def coordstochars(coordlist):
     charlist=[]
-    coordct=0
     for coords in coordlist:
-        coordct+=1
         row=coords[0]
         col=coords[1]
         chr=mystrlist[row][col]
@@ -129,6 +128,10 @@ for line in lines:
     maxrows+=1
     l=line.split('\n')[0]
     mychars=l.split(',')
+    for ch in mychars:
+        if ch not in allowedchars:
+            print("Illegal character %c found in input file!"%ch)
+            sys.exit(-1)
     if maxcols == 0:
         maxcols=len(mychars)
     mystrlist.append(mychars)
@@ -185,22 +188,32 @@ elements={}
 for row in range(0,maxrows):
     for col in range(0,maxcols):
         elements[(row,col)]=[]
+        if mystrlist[row][col] == '!':
+            continue
         if row+1<maxrows:
-            elements[(row,col)].append((row+1,col))
+            if mystrlist[row+1][col] != '!':
+                elements[(row,col)].append((row+1,col))
         if row+1<maxrows and col+1<maxcols:
-            elements[(row,col)].append((row+1,col+1))
+            if mystrlist[row+1][col+1] != '!':
+                elements[(row,col)].append((row+1,col+1))
         if row+1<maxrows and col-1>=0:
-            elements[(row,col)].append((row+1,col-1))
+            if mystrlist[row+1][col-1] != '!':
+                elements[(row,col)].append((row+1,col-1))
         if row-1>=0:
-            elements[(row,col)].append((row-1,col))
+            if mystrlist[row-1][col] != '!':
+                elements[(row,col)].append((row-1,col))
         if row-1>=0 and col-1>=0:
-            elements[(row,col)].append((row-1,col-1))
+            if mystrlist[row-1][col-1] != '!':
+                elements[(row,col)].append((row-1,col-1))
         if row-1>=0 and col+1<maxcols:
-            elements[(row,col)].append((row-1,col+1))
+            if mystrlist[row-1][col+1] != '!':
+                elements[(row,col)].append((row-1,col+1))
         if col+1<maxcols :
-            elements[(row,col)].append((row,col+1))
+            if mystrlist[row][col+1] != '!':
+                elements[(row,col)].append((row,col+1))
         if col-1>=0 :
-            elements[(row,col)].append((row,col-1))
+            if mystrlist[row][col-1] != '!':
+                elements[(row,col)].append((row,col-1))
 seen=set()
 rejects=[]    
 for row in range(0,maxrows):
@@ -217,7 +230,10 @@ for row in range(0,maxrows):
             if assembled in suppresslist:
                 continue
             if assembled not in seen:
-                print(assembled)
+                if debug:
+                    print(assembled,results)
+                else:
+                    print(assembled)
                 seen.add(assembled)
             #if not assembled in allresults:
             #    allresults.append(assembled)
